@@ -90,11 +90,9 @@ class PowerArmorInfoWidget(widgets.WidgetBase):
                         i+=1
             for item in powerArmorPaperDollSlots:
                 if (not item in equipedPA and (not item == 'Body')):
-                    print('item:%s'%item)
                     self.setWidgetValues(item,0, 'Empty',' ')
 
     def setWidgetValues(self, subwidget,value,text,itemName):
-        print('ok2')
         methodToCall = getattr(self.widget,subwidget + 'Bar')
         methodToCall.setValue(value)
         methodToCall = getattr(self.widget,subwidget + 'Label')
