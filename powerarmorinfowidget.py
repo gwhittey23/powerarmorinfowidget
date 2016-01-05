@@ -72,6 +72,8 @@ class PowerArmorInfoWidget(widgets.WidgetBase):
                 if (item.child('isPowerArmorItem').value() and (item.child('equipState').value() == 1)):
                     itemHealthTxt = inventoryutils.itemFindItemCardInfoValue(item, '$health')
                     itemHealth = itemHealthTxt.split('/')
+                    itemTxt = item.child('text').value()
+
                     i = 0
                     paperDollLoc = None
                     for section in item.child('PaperdollSection').value():
@@ -81,16 +83,22 @@ class PowerArmorInfoWidget(widgets.WidgetBase):
                                 maxHP = self.paHP[powerArmorPaperDollSlots[i] + 'Max']
                                 curHP = self.paHP[powerArmorPaperDollSlots[i] + 'Cur']
                                 percentHP = (curHP*100/maxHP)
-                                self.setWidgetValues(powerArmorPaperDollSlots[i],percentHP, itemHealthTxt)
+                                if itemTxt:
+                                    self.widget.headItemLabel.setText(itemTxt)
+                                self.setWidgetValues(powerArmorPaperDollSlots[i],percentHP, itemHealthTxt,itemTxt)
                                 equipedPA.append(powerArmorPaperDollSlots[i])
                         i+=1
             for item in powerArmorPaperDollSlots:
                 if (not item in equipedPA and (not item == 'Body')):
                     self.setWidgetValues(item,0, 'Empty')
 
-    def setWidgetValues(self, subwidget,value,text):
+    def setWidgetValues(self, subwidget,value,text,itemName):
         methodToCall = getattr(self.widget,subwidget + 'Bar')
         methodToCall.setValue(value)
         methodToCall = getattr(self.widget,subwidget + 'Label')
         methodToCall.setText(text)
+
+        methodToCall = getattr(self.widget,subwidget + 'ItemLabel')
+        methodToCall.setText(itemName)
+
 
